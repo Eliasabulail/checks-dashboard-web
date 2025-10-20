@@ -1,97 +1,169 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Checks Dashboard
 
-# Getting Started
+A modern Progressive Web App (PWA) for managing your payments and checks, built with Next.js, TypeScript, and Tailwind CSS.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features
 
-## Step 1: Start Metro
+- ✅ **Check Management**: Create, edit, and delete checks
+- 📊 **Dashboard Analytics**: View statistics by currency and status
+- 🔍 **Advanced Filtering**: Filter by today, overdue, upcoming, completed, or removed checks
+- 💰 **Multi-Currency Support**: Support for USD, JOD, and ILS
+- 🎯 **Priority System**: Set priority levels (low, medium, high) for checks
+- 📱 **Responsive Design**: Works seamlessly on desktop and mobile devices
+- 🔥 **Real-time Updates**: Powered by Firebase Firestore
+- 🎨 **Modern UI**: Beautiful interface built with Tailwind CSS
+- 📲 **PWA Support**: Install as a native app on your device
+- 🔄 **Offline Functionality**: Works offline with service worker caching
+- 🚀 **Fast Loading**: Optimized performance with caching strategies
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Tech Stack
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: Firebase Firestore
+- **Icons**: Lucide React
+- **State Management**: React Hooks
+- **PWA**: Service Worker, Web App Manifest
+- **Image Processing**: Sharp (for icon generation)
 
-```sh
-# Using npm
-npm start
+## Getting Started
 
-# OR using Yarn
-yarn start
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd checksDashboard
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
 ```
 
-### iOS
+3. Set up Firebase:
+   - Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
+   - Enable Firestore Database
+   - Copy your Firebase config to `src/services/firebase.ts`
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+4. Run the development server:
+```bash
+npm run dev
+# or
+yarn dev
 ```
 
-Then, and every time you update your native dependencies, run:
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-```sh
-bundle exec pod install
+6. **Install as PWA** (Optional):
+   - On mobile: Use "Add to Home Screen" from your browser menu
+   - On desktop: Look for the install prompt or use browser's install option
+   - The app will work offline after installation
+
+## Project Structure
+
+```
+├── app/                    # Next.js app directory
+│   ├── globals.css        # Global styles with Tailwind
+│   ├── layout.tsx         # Root layout with PWA meta tags
+│   └── page.tsx           # Main dashboard page
+├── public/                # Static assets
+│   ├── icons/            # PWA icons in various sizes
+│   ├── manifest.json     # Web app manifest
+│   ├── sw.js            # Service worker
+│   └── icon.svg         # Source icon for generation
+├── scripts/              # Build scripts
+│   └── generate-icons.js # Icon generation script
+├── src/
+│   ├── components/       # React components
+│   │   ├── PWAInstallPrompt.tsx # PWA install prompt
+│   │   ├── CheckCard.tsx  # Individual check card
+│   │   └── ConfirmDialog.tsx # Confirmation modal
+│   ├── constants/        # App constants
+│   ├── services/         # Firebase services
+│   ├── types/           # TypeScript type definitions
+│   └── utils/           # Utility functions
+├── next.config.js       # Next.js configuration with PWA settings
+└── tailwind.config.js   # Tailwind configuration
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## Usage
 
-```sh
-# Using npm
-npm run ios
+### Adding a Check
+1. Click the "+" button in the top-right corner
+2. Fill in the check details:
+   - Title (required)
+   - Amount (required)
+   - Payee (optional)
+   - Currency (USD, JOD, or ILS)
+   - Priority (low, medium, or high)
+   - Due date
+3. Click "Add Check"
 
-# OR using Yarn
-yarn ios
-```
+### Managing Checks
+- **Mark as Complete**: Click on a check card when viewing "Today" filter
+- **Delete**: Click the trash icon on any unpaid check
+- **Restore**: View "Removed" filter to restore deleted checks
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Filtering
+Use the filter buttons to view:
+- **All**: All checks
+- **Today**: Checks due today
+- **Overdue**: Past due checks
+- **Upcoming**: Checks due within 7 days
+- **Completed**: Paid checks
+- **Removed**: Deleted checks
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## PWA Features
 
-## Step 3: Modify your app
+This app is a Progressive Web App (PWA) with the following features:
 
-Now that you have successfully run the app, let's make changes!
+### Installation
+- **Mobile**: Use "Add to Home Screen" from your browser menu
+- **Desktop**: Look for the install prompt or use browser's install option
+- **Automatic Prompt**: The app will show an install prompt when appropriate
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### Offline Functionality
+- **Service Worker**: Caches resources for offline use
+- **Offline Access**: View previously loaded checks when offline
+- **Background Sync**: Syncs data when connection is restored
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+### App-like Experience
+- **Standalone Mode**: Runs without browser UI when installed
+- **Custom Icons**: Beautiful app icons for all platforms
+- **Splash Screen**: Native-like loading experience
+- **Push Notifications**: Ready for future notification features
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+### Performance
+- **Fast Loading**: Optimized caching strategies
+- **Reduced Data Usage**: Efficient resource caching
+- **Background Updates**: Updates content in the background
 
-## Congratulations! :tada:
+## Firebase Configuration
 
-You've successfully run and modified your React Native App. :partying_face:
+The app uses Firebase Firestore for data persistence. Make sure to:
 
-### Now what?
+1. Create a Firebase project
+2. Enable Firestore Database
+3. Update the Firebase config in `src/services/firebase.ts`
+4. Set up appropriate Firestore security rules
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+## Contributing
 
-# Troubleshooting
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## License
 
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+This project is licensed under the MIT License.

@@ -96,5 +96,3 @@ export function getPriorityColor(priority: Priority | undefined) {
       return '#8E8E93';
   }
 }
-
-

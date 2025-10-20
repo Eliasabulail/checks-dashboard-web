@@ -7,9 +7,9 @@ export type CheckItem = {
   dueDate: string;
   notificationId?: string | null;
   priority?: Priority;
-  payee: string; // now required
-  paid?: boolean; // new status
-  currency: string; // currency of the check
+  payee: string | null;
+  paid?: boolean;
+  currency: string;
 };
 
 export type DashboardStats = {
@@ -18,5 +18,3 @@ export type DashboardStats = {
   upcomingCount: number;
   totalChecks: number;
 };
-
-

@@ -1,6 +1,6 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { COLORS } from '../constants';
 
 type ConfirmDialogProps = {
   visible: boolean;
@@ -22,73 +22,44 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onCancel,
 }) => {
   const [loading, setLoading] = useState(false);
+  
   if (!visible) return null;
 
   return (
-    <Modal transparent visible={visible} animationType="fade">
-      <View style={styles.overlay}>
-        <View style={styles.container}>
-          {title ? <Text style={styles.title}>{title}</Text> : null}
-          {message ? <Text style={styles.message}>{message}</Text> : null}
-          <View style={styles.actions}>
-            <TouchableOpacity disabled={loading} onPress={onCancel} style={styles.cancelButton}>
-              <Text style={styles.cancelText}>{cancelText}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity disabled={loading} onPress={async () => {
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-xl p-5 w-11/12 max-w-md">
+        {title && (
+          <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
+        )}
+        {message && (
+          <p className="text-base text-gray-700 mb-5">{message}</p>
+        )}
+        <div className="flex justify-end space-x-3">
+          <button
+            disabled={loading}
+            onClick={onCancel}
+            className="bg-gray-100 hover:bg-gray-200 px-4 py-2.5 rounded-lg text-gray-700 font-semibold transition-colors disabled:opacity-50"
+          >
+            {cancelText}
+          </button>
+          <button
+            disabled={loading}
+            onClick={async () => {
               setLoading(true);
-              await onConfirm().finally(() => {
+              try {
+                await onConfirm();
+              } finally {
                 setLoading(false);
-              });
-            }} style={[
-              styles.confirmButton,
-              loading && styles.buttonDisabled,
-            ]}>
-              <Text style={[styles.confirmText, loading && styles.textDisabled]}>{confirmText}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </Modal>
+              }
+            }}
+            className="bg-primary hover:bg-blue-600 px-4 py-2.5 rounded-lg text-white font-semibold transition-colors disabled:opacity-50"
+          >
+            {loading ? 'Loading...' : confirmText}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default ConfirmDialog;
-
-const styles = StyleSheet.create({
-  buttonDisabled: {
-    opacity: 0.5,
-  },
-  textDisabled: {
-    color: '#999',
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container: {
-    width: '85%',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-  },
-  title: { fontSize: 18, fontWeight: '700', color: COLORS.text, marginBottom: 10 },
-  message: { fontSize: 16, color: COLORS.text, marginBottom: 20 },
-  actions: { flexDirection: 'row', justifyContent: 'flex-end' },
-  cancelButton: {
-    backgroundColor: '#F2F2F7',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginRight: 10,
-  },
-  cancelText: { color: '#333', fontWeight: '600' },
-  confirmButton: {
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-  confirmText: { color: '#fff', fontWeight: '600' },
-});
