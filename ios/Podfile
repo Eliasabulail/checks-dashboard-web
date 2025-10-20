@@ -23,6 +23,8 @@ target 'checksDashboard' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
+
   post_install do |installer|
     react_native_post_install(
       installer,
