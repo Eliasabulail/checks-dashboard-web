@@ -11,7 +11,11 @@ interface AddCheckModalProps {
   onSuccess: () => void;
 }
 
-export default function AddCheckModal({ visible, onClose, onSuccess }: AddCheckModalProps) {
+export default function AddCheckModal({
+  visible,
+  onClose,
+  onSuccess,
+}: AddCheckModalProps) {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState(new Date());
@@ -46,7 +50,7 @@ export default function AddCheckModal({ visible, onClose, onSuccess }: AddCheckM
       setBtnLoading(false);
       return;
     }
-    
+
     try {
       const toCreate = {
         title: title.trim(),
@@ -58,7 +62,7 @@ export default function AddCheckModal({ visible, onClose, onSuccess }: AddCheckM
         currency,
       };
       await createCheck(toCreate as any);
-      
+
       // Reset form
       setTitle('');
       setAmount('');
@@ -80,35 +84,63 @@ export default function AddCheckModal({ visible, onClose, onSuccess }: AddCheckM
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-5">
       <div className="bg-white rounded-2xl w-full max-w-md shadow-xl">
         <div className="p-5">
-          <h2 className="text-xl font-bold text-gray-900 mb-5 text-center">Add New Check</h2>
-          
+          <h2 className="text-xl font-bold text-gray-900 mb-5 text-center">
+            Add New Check
+          </h2>
+          <button
+            className={`flex-1 py-3 px-4 rounded-xl text-white font-semibold transition-colors ${
+              btnLoading
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-primary hover:bg-blue-600'
+            }`}
+            onClick={() => {
+              alert('Notification API is supported in this browser.');
+              Notification.requestPermission().then(result => {
+                if (result === 'granted') {
+                  // Permission granted, now you can show a notification
+                  const title = 'New Message!';
+                  const options = {
+                    body: 'You have a new message from a friend.',
+                    icon: '/images/icon-128.png', // Path to your notification icon
+                  };
+                  new Notification(title, options);
+                } else {
+                  console.log('Notification permission denied.');
+                }
+              });
+            }}
+          >
+            <span>send</span>
+          </button>
           <div className="space-y-3">
             <input
               type="text"
               placeholder="Check title"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={e => setTitle(e.target.value)}
               className="w-full bg-gray-50 rounded-xl px-4 py-3 text-base text-gray-900 border border-transparent focus:border-primary focus:outline-none"
             />
-            
+
             <input
               type="number"
               placeholder="Amount"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={e => setAmount(e.target.value)}
               className="w-full bg-gray-50 rounded-xl px-4 py-3 text-base text-gray-900 border border-transparent focus:border-primary focus:outline-none"
             />
-            
+
             <input
               type="text"
               placeholder="Payee (to whom the check is written)"
               value={payee}
-              onChange={(e) => setPayee(e.target.value)}
+              onChange={e => setPayee(e.target.value)}
               className="w-full bg-gray-50 rounded-xl px-4 py-3 text-base text-gray-900 border border-transparent focus:border-primary focus:outline-none"
             />
-            
+
             <div className="flex items-center mb-3">
-              <span className="text-base mr-3 font-medium text-gray-900">Currency:</span>
+              <span className="text-base mr-3 font-medium text-gray-900">
+                Currency:
+              </span>
               {['USD', 'JOD', 'ILS'].map(cur => (
                 <button
                   key={cur}
@@ -123,9 +155,11 @@ export default function AddCheckModal({ visible, onClose, onSuccess }: AddCheckM
                 </button>
               ))}
             </div>
-            
+
             <div className="flex items-center mb-3">
-              <span className="text-base mr-3 font-medium text-gray-900">Priority:</span>
+              <span className="text-base mr-3 font-medium text-gray-900">
+                Priority:
+              </span>
               {['low', 'medium', 'high'].map(p => (
                 <button
                   key={p}
@@ -140,23 +174,23 @@ export default function AddCheckModal({ visible, onClose, onSuccess }: AddCheckM
                 </button>
               ))}
             </div>
-            
+
             <div className="flex items-center bg-gray-50 rounded-xl px-4 py-3">
               <Calendar className="w-5 h-5 text-gray-500 mr-3" />
               <input
                 type="date"
                 value={date.toISOString().substr(0, 10)}
-                onChange={(e) => setDate(new Date(e.target.value))}
+                onChange={e => setDate(new Date(e.target.value))}
                 className="flex-1 text-base text-gray-900 bg-transparent outline-none"
               />
             </div>
-            
+
             {Object.entries(formErrors).map(([key, value]) => (
               <p key={key} className="text-base text-red-500 font-medium">
                 {value}
               </p>
             ))}
-            
+
             <div className="flex space-x-2 pt-3">
               <button
                 className="flex-1 bg-gray-100 hover:bg-gray-200 py-3 rounded-xl text-gray-700 font-semibold transition-colors"
