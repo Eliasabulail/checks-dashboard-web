@@ -7,7 +7,7 @@ export function getDashboardStats(checks: CheckItem[]): DashboardStats {
   const overdueCount = checks.filter((check: CheckItem) => new Date(check.dueDate) < now).length;
   const upcomingCount = checks.filter((check: CheckItem) => {
     const days = getDaysLeft(check.dueDate);
-    return days > 0 && days <= 7;
+    return days > 0;
   }).length;
 
   return { totalAmount, overdueCount, upcomingCount, totalChecks: checks.length };
@@ -49,7 +49,7 @@ export function filterChecks(
     case 'upcoming':
       filtered = filtered.filter((c: CheckItem) => {
         const days = getDaysLeft(c.dueDate);
-        return days > 0 && days <= 7 && !c.paid;
+        return days > 0 && !c.paid;
       });
       break;
     case 'completed':
