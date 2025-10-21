@@ -115,3 +115,26 @@ export async function deleteCheckById(id: string) {
   // Delete the original check
   await deleteDoc(checkRef);
 }
+
+export async function scheduleCheckReminders(
+  id: string,
+  dueDate: string,
+  title: string,
+  priority: string
+): Promise<string | null> {
+  if (!('serviceWorker' in navigator)) return null;
+
+  const registration = await navigator.serviceWorker.ready;
+  registration.active?.postMessage({
+    action: 'scheduleNotification',
+    data: {
+      id,
+      title,
+      body: `Check "${title}" is due soon (${priority})`,
+      dueDate,
+      priority,
+    },
+  });
+
+  return `notif-${id}`;
+}

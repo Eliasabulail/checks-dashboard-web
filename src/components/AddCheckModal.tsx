@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Calendar } from 'lucide-react';
-import { Priority } from '../types';
-import { createCheck } from '../services/checksRepository';
+import { CheckItem, Priority } from '../types';
+import { createCheck, scheduleCheckReminders, setNotificationIds } from '../services/checksRepository';
 
 interface AddCheckModalProps {
   visible: boolean;
@@ -61,7 +61,15 @@ export default function AddCheckModal({
         notificationId: null as string | null,
         currency,
       };
-      await createCheck(toCreate as any);
+      const newId = await createCheck(toCreate as Omit<CheckItem, 'id'>);
+
+      const notificationId = await scheduleCheckReminders(
+        newId,
+        toCreate.dueDate,
+        toCreate.title,
+        toCreate.priority || 'medium',
+      );
+      if (notificationId) await setNotificationIds(newId, notificationId);
 
       // Reset form
       setTitle('');
@@ -87,31 +95,6 @@ export default function AddCheckModal({
           <h2 className="text-xl font-bold text-gray-900 mb-5 text-center">
             Add New Check
           </h2>
-          <button
-            className={`flex-1 py-3 px-4 rounded-xl text-white font-semibold transition-colors ${
-              btnLoading
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-primary hover:bg-blue-600'
-            }`}
-            onClick={() => {
-              alert('Notification API is supported in this browser.');
-              Notification.requestPermission().then(result => {
-                if (result === 'granted') {
-                  // Permission granted, now you can show a notification
-                  const title = 'New Message!';
-                  const options = {
-                    body: 'You have a new message from a friend.',
-                    icon: '/images/icon-128.png', // Path to your notification icon
-                  };
-                  new Notification(title, options);
-                } else {
-                  console.log('Notification permission denied.');
-                }
-              });
-            }}
-          >
-            <span>send</span>
-          </button>
           <div className="space-y-3">
             <input
               type="text"
