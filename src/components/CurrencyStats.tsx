@@ -42,9 +42,7 @@ export default function CurrencyStats({ checks }: CurrencyStatsProps) {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-lg font-bold text-gray-900 mb-0.5 truncate">
-                  {cur === 'USD' ? '$' : ''}
                   {obj.totalAmount.toFixed(2)}
-                  {cur !== 'USD' ? ' ' + cur : ''}
                 </div>
                 <div className="text-xs text-gray-500 truncate">
                   {cur} • {obj.count} Check{obj.count > 1 ? 's' : ''}
