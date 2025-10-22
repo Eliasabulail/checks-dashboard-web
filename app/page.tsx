@@ -39,7 +39,7 @@ export default function DashboardScreen() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<
-    'all' | 'today' | 'overdue' | 'upcoming' | 'completed' | 'removed'
+    'all' | 'today' | 'month' | 'overdue' | 'upcoming' | 'completed' | 'removed'
   >('today');
   const [modalVisible, setModalVisible] = useState(false);
   const [removedChecks, setRemovedChecks] = useState<any[]>([]);

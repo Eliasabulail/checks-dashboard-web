@@ -1,30 +1,56 @@
 'use client';
 
 import React from 'react';
-import { Search, List, Sun, AlertTriangle, Clock, CheckCircle2, Trash2 } from 'lucide-react';
+import {
+  Search,
+  List,
+  Sun,
+  AlertTriangle,
+  Clock,
+  CheckCircle2,
+  Trash2,
+  CalendarRange,
+} from 'lucide-react';
 
 interface SearchAndFiltersProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  selectedFilter: 'all' | 'today' | 'overdue' | 'upcoming' | 'completed' | 'removed';
-  setSelectedFilter: (filter: 'all' | 'today' | 'overdue' | 'upcoming' | 'completed' | 'removed') => void;
+  selectedFilter:
+    | 'all'
+    | 'today'
+    | 'month'
+    | 'overdue'
+    | 'upcoming'
+    | 'completed'
+    | 'removed';
+  setSelectedFilter: (
+    filter:
+      | 'all'
+      | 'today'
+      | 'month'
+      | 'overdue'
+      | 'upcoming'
+      | 'completed'
+      | 'removed',
+  ) => void;
 }
 
-export default function SearchAndFilters({ 
-  searchQuery, 
-  setSearchQuery, 
-  selectedFilter, 
-  setSelectedFilter 
-}: SearchAndFiltersProps) {
-  const filterOptions = [
-    { key: 'all', label: 'All', icon: List },
-    { key: 'today', label: 'Today', icon: Sun },
-    { key: 'overdue', label: 'Overdue', icon: AlertTriangle },
-    { key: 'upcoming', label: 'Upcoming', icon: Clock },
-    { key: 'completed', label: 'Completed', icon: CheckCircle2 },
-    { key: 'removed', label: 'Removed', icon: Trash2 },
-  ];
+const filterOptions = [
+  { key: 'all', label: 'All', icon: List },
+  { key: 'today', label: 'Today', icon: Sun },
+  { key: 'month', label: 'Month', icon: CalendarRange },
+  { key: 'overdue', label: 'Overdue', icon: AlertTriangle },
+  { key: 'upcoming', label: 'Upcoming', icon: Clock },
+  { key: 'completed', label: 'Completed', icon: CheckCircle2 },
+  { key: 'removed', label: 'Removed', icon: Trash2 },
+];
 
+export default function SearchAndFilters({
+  searchQuery,
+  setSearchQuery,
+  selectedFilter,
+  setSelectedFilter,
+}: SearchAndFiltersProps) {
   return (
     <div className="mb-4">
       <div className="flex items-center bg-white rounded-xl px-4 py-3 mb-3 shadow-sm">
@@ -33,7 +59,7 @@ export default function SearchAndFilters({
           type="text"
           placeholder="Search checks..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           className="flex-1 text-base text-gray-900 outline-none"
         />
       </div>

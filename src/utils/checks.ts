@@ -27,7 +27,7 @@ export function getCurrencyStats(checks: CheckItem[]): Record<string, { count: n
 export function filterChecks(
   checks: CheckItem[],
   searchQuery: string,
-  selectedFilter: 'all' | 'today' | 'overdue' | 'upcoming' | 'completed' | 'removed'
+  selectedFilter: 'all' | 'today' | 'month' | 'overdue' | 'upcoming' | 'completed' | 'removed'
 ): CheckItem[] {
   let filtered = checks;
 
@@ -62,6 +62,16 @@ export function filterChecks(
           due.getFullYear() === now.getFullYear() &&
           due.getMonth() === now.getMonth() &&
           due.getDate() === now.getDate() &&
+          !c.paid
+        );
+      });
+      break;
+    case 'month': 
+      filtered = filtered.filter((c: CheckItem) => {
+        const due = new Date(c.dueDate);
+        return (
+          due.getFullYear() === now.getFullYear() &&
+          due.getMonth() === now.getMonth() &&
           !c.paid
         );
       });

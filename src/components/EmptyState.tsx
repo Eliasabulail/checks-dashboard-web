@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Trash2, Sun, AlertTriangle, CheckCircle2, List } from 'lucide-react';
+import { Trash2, Sun, AlertTriangle, CheckCircle2, List, CalendarRange } from 'lucide-react';
 
 interface EmptyStateProps {
-  filter: 'all' | 'today' | 'overdue' | 'upcoming' | 'completed' | 'removed';
+  filter: 'all' | 'today' | 'month' | 'overdue' | 'upcoming' | 'completed' | 'removed';
   searchQuery: string;
 }
 
@@ -21,6 +21,12 @@ export default function EmptyState({ filter, searchQuery }: EmptyStateProps) {
         return {
           icon: <Sun className="w-16 h-16 text-gray-300 mb-4" />,
           title: 'No checks due today',
+          subtitle: null
+        };
+      case 'month':
+        return {
+          icon: <CalendarRange className="w-16 h-16 text-gray-300 mb-4" />,
+          title: 'No checks due this month',
           subtitle: null
         };
       case 'overdue':
